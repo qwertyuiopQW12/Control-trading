@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>تغيير مستوى VIP</title>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.0/firebase-app.js";
@@ -22,10 +22,10 @@
 
     window.updateVipLevel = async function () {
       const userId = document.getElementById("userId").value.trim();
-      const level = document.getElementById("vipLevel").value.trim();
+      const level = document.getElementById("vipLevel").value;
 
       if (!userId || !level) {
-        alert("يرجى إدخال معرف المستخدم والمستوى.");
+        alert("يرجى إدخال معرف المستخدم واختيار المستوى.");
         return;
       }
 
@@ -33,16 +33,83 @@
       await set(vipRef, level);
       alert("تم تحديث المستوى إلى " + level);
     };
+
+    window.previewVipImage = function () {
+      const level = document.getElementById("vipLevel").value;
+      const levelNum = level.replace(/\s/g, "").replace("VIP", "VlP");
+      document.getElementById("vip-text").textContent = level;
+      document.getElementById("vip-image").src = levelNum + ".png";
+    };
   </script>
+  <style>
+    body {
+      font-family: Cairo, sans-serif;
+      background: #f4f4f4;
+      padding: 30px;
+      text-align: center;
+    }
+    .vip-box {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .vip-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #6c30a5;
+      font-weight: bold;
+    }
+    #vip-image {
+      width: 150px;
+      height: auto;
+      border-radius: 12px;
+      border: 2px solid #6c30a5;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      margin-bottom: 15px;
+    }
+    input, select {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #6c30a5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body style="font-family: Cairo, sans-serif; background: #f4f4f4; padding: 30px; text-align: center;">
-  <div style="max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-    <h2>تحديث مستوى VIP</h2>
-    <input type="text" id="userId" placeholder="معرف المستخدم" style="padding: 10px; width: 100%; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ccc;" />
-    <input type="text" id="vipLevel" placeholder="مثل: VIP 1 أو VIP 6" style="padding: 10px; width: 100%; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ccc;" />
-    <button onclick="updateVipLevel()" style="padding: 10px 20px; background-color: #6c30a5; color: white; border: none; border-radius: 8px; cursor: pointer;">
-      تحديث المستوى
-    </button>
+<body>
+  <div class="vip-box">
+    <h2 class="vip-title">تحديث مستوى VIP</h2>
+    <input type="text" id="userId" placeholder="معرف المستخدم" />
+    
+    <select id="vipLevel" onchange="previewVipImage()">
+      <option value="">-- اختر مستوى VIP --</option>
+      <option value="VIP 1">VIP 1</option>
+      <option value="VIP 2">VIP 2</option>
+      <option value="VIP 3">VIP 3</option>
+      <option value="VIP 4">VIP 4</option>
+      <option value="VIP 5">VIP 5</option>
+      <option value="VIP 6">VIP 6</option>
+    </select>
+
+    <div id="vip-display">
+      <div id="vip-text" class="vip-title">VIP 1</div>
+      <img id="vip-image" src="VlP1.png" alt="صورة VIP" />
+    </div>
+
+    <button onclick="updateVipLevel()">تحديث المستوى</button>
   </div>
 </body>
 </html>
